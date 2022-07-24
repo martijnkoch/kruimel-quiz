@@ -21,7 +21,7 @@ class PlayerController extends Controller
             ],
         ];
 
-        return response()->json($response);
+        return response($response);
     }
 
     public function storeScore(Request $request)
@@ -37,7 +37,7 @@ class PlayerController extends Controller
             ],
         ];
 
-        return response()->json($response);
+        return response($response);
     }
 
     public function showLeaderboard(Request $request)
@@ -54,6 +54,6 @@ class PlayerController extends Controller
             ],
         ];
 
-        return response()->json($result);
+        return response($result);
     }
 }
