@@ -42,6 +42,18 @@ class PlayerController extends Controller
 
     public function showLeaderboard(Request $request)
     {
-        return Player::whereNotNull('score')->orWhere('score', '<>', '')->get();
+        $result =  Player::whereNotNull('score')
+        ->orWhere('score', '<>', '')
+        ->limit(10)
+        ->get();
+
+        $response = [
+            'success' => true,
+            'user' => [
+                $result
+            ],
+        ];
+
+        return response()->json($result);
     }
 }
