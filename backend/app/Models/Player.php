@@ -10,4 +10,6 @@ class Player extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'score'];
+
+    protected $hidden = ['id', 'created_at', 'updated_at'];
 }
