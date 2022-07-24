@@ -17,3 +17,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/player', [PlayerController::class, 'storePlayer']);
 Route::post('/score', [PlayerController::class, 'storeScore']);
+Route::get('/leaderboard', [PlayerController::class, 'showLeaderboard']);

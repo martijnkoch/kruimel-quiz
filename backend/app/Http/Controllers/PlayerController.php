@@ -27,31 +27,21 @@ class PlayerController extends Controller
     public function storeScore(Request $request)
     {
         Player::where('name', request('name'))
-        ->update(['score' => request('score')]);
+            ->update(['score' => request('score')]);
 
         $response = [
             'success' => true,
             'data' => [
                 "name" => request('name'),
-                "score" => request('score')
+                "score" => request('score'),
             ],
         ];
-        
+
         return response()->json($response);
     }
 
     public function showLeaderboard(Request $request)
     {
-        Player::where('name', request('name'))
-        ->update(['score' => request('score')]);
-
-        $response = [
-            'success' => true,
-            'data' => [
-                "name" => request('name'),
-                "score" => request('score')
-            ],
-        ];
-        return response()->json($response);
+        return Player::whereNotNull('score')->orWhere('score', '<>', '')->get();
     }
 }
