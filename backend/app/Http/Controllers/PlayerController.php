@@ -9,17 +9,28 @@ class PlayerController extends Controller
 {
     public function storePlayer(Request $request)
     {
-        $player = new Player;
 
-        $player->name = request('name');
-        $player->save();
+        if (Player::where('name', request('name'))->first()) {
+            $response = [
+                'success' => false,
+                'message' => 'name already exsists',
+                'data' => [
+                    "name" => request('name'),
+                ],
+            ];
+        } else {
+            $player = new Player;
 
-        $response = [
-            'success' => true,
-            'data' => [
-                "name" => request('name'),
-            ],
-        ];
+            $player->name = request('name');
+            $player->save();
+
+            $response = [
+                'success' => true,
+                'data' => [
+                    "name" => request('name'),
+                ],
+            ];
+        }
 
         return response($response);
     }
@@ -40,17 +51,17 @@ class PlayerController extends Controller
         return response($response);
     }
 
-    public function showLeaderboard(Request $request)
+    public function showLeaderboard()
     {
-        $result =  Player::whereNotNull('score')
-        ->orWhere('score', '<>', '')
-        ->limit(10)
-        ->get();
+        $result = Player::whereNotNull('score')
+            ->orWhere('score', '<>', '')
+            ->limit(10)
+            ->get();
 
         $response = [
             'success' => true,
             'user' => [
-                $result
+                $result,
             ],
         ];
 

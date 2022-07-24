@@ -1,12 +1,18 @@
 <template>
-  <h1>Kruimelquiz</h1>
-  <form>
-    <label>Je naam</label>
-    <input type="text" v-model="name" />
-    <p>{{ errors.name }}</p>
-    <button @click.prevent="submit()">Start de quiz!</button>
-  </form>
+  <div class="wrapper">
+    <img src="@/assets/images/kruimelvlaai.png" alt="kruimelvlaai" />
+    <h1>Kruimelquiz</h1>
+    <form>
+      <label>Je naam</label>
+      <input type="text" v-model="name" />
+      <p>{{ errors.name }}</p>
+      <p v-if="userExists === true">WTF MAN BESTAAT AL</p>
+      <button @click.prevent="submit()">Start de quiz!</button>
+    </form>
+  </div>
 </template>
+
+<style lang="scss"></style>
 
 <script>
 import { defineComponent } from "vue";
@@ -18,6 +24,7 @@ export default defineComponent({
     return {
       errors: [],
       valid: true,
+      userExists: false,
       name: "",
     };
   },
@@ -48,11 +55,15 @@ export default defineComponent({
 
         axios
           .post("http://127.0.0.1:8000/api/player", postData)
-          .then(() => {
-            const store = useQuizStore();
-            store.$patch({ playerName: this.name });
+          .then((response) => {
+            if (response.data.success === false) {
+              this.userExists = true;
+            } else {
+              const store = useQuizStore();
+              store.$patch({ playerName: this.name });
 
-            this.$router.push("/question");
+              this.$router.push("/question");
+            }
           })
           .catch((error) => {
             console.log(error);
