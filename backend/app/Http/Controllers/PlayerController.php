@@ -10,28 +10,22 @@ class PlayerController extends Controller
     public function storePlayer(Request $request)
     {
 
-        if (Player::where('name', request('name'))->first()) {
-            $response = [
-                'success' => false,
-                'message' => 'name already exsists',
-                'data' => [
-                    "name" => request('name'),
-                ],
-            ];
-        } else {
-            $player = new Player;
+        if (!Player::where('name', request('name'))->first()) {
+            $success = true;
 
+            $player = new Player;
             $player->name = request('name');
             $player->save();
-
-            $response = [
-                'success' => true,
-                'data' => [
-                    "name" => request('name'),
-                ],
-            ];
+        } else {
+            $success = false;
         }
 
+        $response = [
+            'success' => $success,
+            'data' => [
+                "name" => request('name'),
+            ],
+        ];
         return response($response);
     }
 
