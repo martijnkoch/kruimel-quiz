@@ -1,6 +1,6 @@
-body {
-    background-color: green;
-}
+@import 'abstracts/reset';
+@import 'abstracts/colors';
+@import 'abstracts/typography';
 
 .wrapper {
     display: flex;
